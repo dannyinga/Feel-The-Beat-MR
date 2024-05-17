@@ -5190,6 +5190,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mruk: {fileID: 905343423}
   drumPadPrefab: {fileID: 3949582405412376217, guid: 06b20d0f491e65c4385a6f44c9944633, type: 3}
+  surfaceSelection: {fileID: 2066509019}
 --- !u!4 &1259129577
 Transform:
   m_ObjectHideFlags: 0
@@ -5202,7 +5203,8 @@ Transform:
   m_LocalPosition: {x: 0.61007047, y: 0.08792381, z: -0.73975587}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2066509020}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1270720858
@@ -7889,7 +7891,7 @@ GameObject:
   - component: {fileID: 2066509020}
   - component: {fileID: 2066509019}
   m_Layer: 0
-  m_Name: Setup
+  m_Name: Surface Selection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7915,12 +7917,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066509018}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.61007047, y: 0.08792381, z: -0.73975587}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1259129577}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2072096312
 GameObject:
@@ -8187,4 +8189,3 @@ SceneRoots:
   - {fileID: 2002254057}
   - {fileID: 520603787}
   - {fileID: 1259129577}
-  - {fileID: 2066509020}

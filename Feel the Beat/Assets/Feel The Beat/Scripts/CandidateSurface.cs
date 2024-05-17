@@ -1,22 +1,29 @@
 using Meta.XR.MRUtilityKit;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class CandidateSurface : MonoBehaviour
 {
+    // Anchor that the surface is attached to
     private MRUKAnchor anchor;
+
+    // Surface hitbox reaches +- surfaceHitboxHeight/2 above and below it and across entire surface plane
     private float surfaceHitboxHeight = .02f;
 
+    // Flags that keep track of each hand and if it is placed
     private bool leftHandPlaced = false;
     private bool rightHandPlaced = false;
 
-    private HashSet<Collider> colliders = new HashSet<Collider>();
+    // Set of colliders currently on the candidate surface
+    private HashSet<Collider> fingertipColliders = new HashSet<Collider>();
 
     // Start is called before the first frame update
     void Start()
     {
+        // Get this surface's MRUKAnchor and it's PlaneRect. This anchor is guaranteed to have a PlaneRect because this script is only attached to Floors and Tables
         anchor = GetComponent<MRUKAnchor>();
         Rect? anchorPlane = anchor.PlaneRect;
 
@@ -38,10 +45,10 @@ public class CandidateSurface : MonoBehaviour
     {
         if (other.tag == "Fingertip" && other.GetComponentInParent<OVRHand>().IsTracked)
         {
-            colliders.Add(other);
+            fingertipColliders.Add(other);
 
             // Check if left hand and right hand are placed
-            foreach (Collider collider in colliders)
+            foreach (Collider collider in fingertipColliders)
             {
                 if (collider.GetComponentInParent<OVRSkeleton>().GetSkeletonType() == OVRSkeleton.SkeletonType.HandLeft)
                 {
@@ -54,24 +61,27 @@ public class CandidateSurface : MonoBehaviour
                 }
             }
             
+            // Check if both hands are placed
             if (leftHandPlaced && rightHandPlaced)
             {
                 // Show confirmation screen
-                Instants.surfaceSelection.SelectSurface(anchor);
+
+                // Tell main controller to set the anchor
+                MainController.SetDrumSurfaceAnchor(anchor);
             }
 
+            // Reset booleans
             leftHandPlaced = false;
             rightHandPlaced = false;
-
-            // Tell controller this surface was selected
         }
     }
 
+    // Remove the fingertip from the list on exit
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Fingertip")
         {
-            colliders.Remove(other);
+            fingertipColliders.Remove(other);
         }
     }
 }

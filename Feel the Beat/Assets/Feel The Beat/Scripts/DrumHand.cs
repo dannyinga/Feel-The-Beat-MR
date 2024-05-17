@@ -5,42 +5,49 @@ using UnityEngine;
 
 public class DrumHand : MonoBehaviour
 {
-    private OVRHand hand;
-    private OVRSkeleton skeleton;
-    private List<Collider> fingertipColliders;
-    private float colliderRadiusMultiplier = .009f;
-    private float colliderHeightMultiplier = 0.015f;
-    private float colliderXOffset = .009f;
+    /** Static Variables */
+    // All BoneId's we need to check for (fingertips) and their respective hitbox multipliers
+    private static Dictionary<OVRSkeleton.BoneId, float> fingertipMultipliers = new Dictionary<OVRSkeleton.BoneId, float>()
+    {
+        {OVRSkeleton.BoneId.Hand_IndexTip, .85f },
+        {OVRSkeleton.BoneId.Hand_MiddleTip, .9f },
+        {OVRSkeleton.BoneId.Hand_RingTip, .85f },
+        {OVRSkeleton.BoneId.Hand_PinkyTip, .7f },
+    };
 
-    private static List<OVRSkeleton.BoneId> boneIds =
-        new List<OVRSkeleton.BoneId>() { OVRSkeleton.BoneId.Hand_IndexTip,
-                                         OVRSkeleton.BoneId.Hand_MiddleTip,
-                                         OVRSkeleton.BoneId.Hand_RingTip,
-                                         OVRSkeleton.BoneId.Hand_PinkyTip};
+    // OVRHand used for hand scale
+    private OVRHand hand;
+
+    // OVRSkeleton used for getting all bones and their transforms
+    private OVRSkeleton skeleton;
+
+    // Keeping a list of my fingertips in case I need to access them later
+    private List<Fingertip> fingertips;
 
     // Start is called before the first frame update
     IEnumerator Start()
     {
         hand = GetComponent<OVRHand>();
         skeleton = GetComponent<OVRSkeleton>();
+
+        // Wait for all bones to be created before attempting to create fingertip colliders. Requires at least one instance of each hand being tracked (must wait for user here)
         while (skeleton.Bones.Count == 0)
         {
             yield return null;
         }
 
-        fingertipColliders = new List<Collider>();
+        // Create the fingertip colliders
+        fingertips = new List<Fingertip>();
         foreach (var bone in skeleton.Bones)
         {
-            if (boneIds.Contains(bone.Id))
+            // If this bone is a finger tip
+            if (fingertipMultipliers.ContainsKey(bone.Id))
             {
-                bone.Transform.AddComponent<CapsuleCollider>();
-                CapsuleCollider currentCollider = bone.Transform.GetComponent<CapsuleCollider>();
-                currentCollider.radius = hand.HandScale * colliderRadiusMultiplier;
-                currentCollider.height = hand.HandScale * colliderHeightMultiplier;
-                currentCollider.center = new Vector3(-hand.HandScale * colliderXOffset, 0f, 0f);
-                currentCollider.tag = "Fingertip";
-                fingertipColliders.Add(currentCollider);
-                bone.Transform.AddComponent<Rigidbody>().isKinematic = true;
+                // Add a fingertip component to each fingertip and save for later access
+                Fingertip ft = bone.Transform.AddComponent<Fingertip>();
+                ft.CreateFingertipHitbox(bone, hand, fingertipMultipliers[bone.Id]);
+                fingertips.Add(ft);
+
             }
         }
     }

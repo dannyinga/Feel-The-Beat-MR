@@ -6,12 +6,15 @@ using UnityEngine;
 
 public class SurfaceSelection : MonoBehaviour
 {
+    // List of all possible anchors in room for the drum surface
     private List<MRUKAnchor> candidateSurfaceAnchors;
 
     void Start()
     {
-        Instants.surfaceSelection = this;
+        
     }
+
+    // Initial Setup. Get all possible surface anchors and add a 
     public void SetupWithAnchors(List<MRUKAnchor> anchors)
     {
         candidateSurfaceAnchors = new List<MRUKAnchor>();
@@ -25,20 +28,15 @@ public class SurfaceSelection : MonoBehaviour
         }
     }
 
-    // Send selected surface to main controller
     // Disable all meshes except selected anchor mesh
     // Disable all candidate surface scripts and colliders
     public void SelectSurface(MRUKAnchor selectedAnchor)
     {
         foreach(MRUKAnchor anchor in candidateSurfaceAnchors)
         {
-            //if (anchor != selectedAnchor)
-            {
-                anchor.GetComponentInChildren<MeshRenderer>().enabled = false;
-            }
+            anchor.GetComponentInChildren<MeshRenderer>().enabled = false;
             anchor.GetComponent<CandidateSurface>().enabled = false;
             anchor.GetComponent<BoxCollider>().enabled = false;
         }
-        Instants.mainController.SetDrumSurfaceAnchorAndProceed(selectedAnchor);
     }
 }
