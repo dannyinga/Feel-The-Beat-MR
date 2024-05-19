@@ -1,3 +1,4 @@
+using Meta.XR.MRUtilityKit;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -5,25 +6,43 @@ using UnityEngine;
 
 public class DrumHand : MonoBehaviour
 {
-    /** Static Variables */
-    // All BoneId's we need to check for (fingertips) and their respective hitbox multipliers
-    private static Dictionary<OVRSkeleton.BoneId, float> fingertipMultipliers = new Dictionary<OVRSkeleton.BoneId, float>()
-    {
-        {OVRSkeleton.BoneId.Hand_IndexTip, .85f },
-        {OVRSkeleton.BoneId.Hand_MiddleTip, .9f },
-        {OVRSkeleton.BoneId.Hand_RingTip, .85f },
-        {OVRSkeleton.BoneId.Hand_PinkyTip, .7f },
-    };
+    #region Constants
+    #endregion
 
-    // OVRHand used for hand scale
-    private OVRHand hand;
+    #region Static Variables
+    
+        // All BoneId's we need to check for (fingertips) and their respective hitbox multipliers
+        private static Dictionary<OVRSkeleton.BoneId, float> fingertipMultipliers = new Dictionary<OVRSkeleton.BoneId, float>()
+        {
+            {OVRSkeleton.BoneId.Hand_IndexTip, .9f },
+            {OVRSkeleton.BoneId.Hand_MiddleTip, 1f },
+            {OVRSkeleton.BoneId.Hand_RingTip, .9f },
+            {OVRSkeleton.BoneId.Hand_PinkyTip, .75f },
+        };
 
-    // OVRSkeleton used for getting all bones and their transforms
-    private OVRSkeleton skeleton;
+    #endregion
 
-    // Keeping a list of my fingertips in case I need to access them later
-    private List<Fingertip> fingertips;
+    #region Public Variables
+    #endregion
 
+    #region Private Variables
+    
+        // Fingertip Prefab to set in inspector
+        [SerializeField] private GameObject fingertipPrefab;
+
+        // OVRHand used for hand scale
+        private OVRHand hand;
+
+        // OVRSkeleton used for getting all bones and their transforms
+        private OVRSkeleton skeleton;
+
+        // Keeping a list of my fingertips in case I need to access them later
+        private List<Fingertip> fingertips;
+
+    #endregion
+
+    #region Unity Methods
+    
     // Start is called before the first frame update
     IEnumerator Start()
     {
@@ -43,9 +62,10 @@ public class DrumHand : MonoBehaviour
             // If this bone is a finger tip
             if (fingertipMultipliers.ContainsKey(bone.Id))
             {
+                GameObject.Instantiate(fingertipPrefab, bone.Transform);
                 // Add a fingertip component to each fingertip and save for later access
-                Fingertip ft = bone.Transform.AddComponent<Fingertip>();
-                ft.CreateFingertipHitbox(bone, hand, fingertipMultipliers[bone.Id]);
+                Fingertip ft = bone.Transform.GetComponentInChildren<Fingertip>();
+                ft.CalibrateFingertip(bone, hand, fingertipMultipliers[bone.Id]);
                 fingertips.Add(ft);
 
             }
@@ -57,4 +77,6 @@ public class DrumHand : MonoBehaviour
     {
 
     }
+
+    #endregion
 }

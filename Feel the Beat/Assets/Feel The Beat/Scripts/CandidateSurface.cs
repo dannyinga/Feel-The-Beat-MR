@@ -41,6 +41,7 @@ public class CandidateSurface : MonoBehaviour
         
     }
 
+    // Select surface if both hands are placed on it
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Fingertip" && other.GetComponentInParent<OVRHand>().IsTracked)

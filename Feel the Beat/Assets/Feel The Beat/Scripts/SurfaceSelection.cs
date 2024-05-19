@@ -14,7 +14,7 @@ public class SurfaceSelection : MonoBehaviour
         
     }
 
-    // Initial Setup. Get all possible surface anchors and add a 
+    // Initial Setup. Get all possible surface anchors and add a CandidateSurface script to each anchor
     public void SetupWithAnchors(List<MRUKAnchor> anchors)
     {
         candidateSurfaceAnchors = new List<MRUKAnchor>();
@@ -30,7 +30,7 @@ public class SurfaceSelection : MonoBehaviour
 
     // Disable all meshes except selected anchor mesh
     // Disable all candidate surface scripts and colliders
-    public void SelectSurface(MRUKAnchor selectedAnchor)
+    public void EndSetup()
     {
         foreach(MRUKAnchor anchor in candidateSurfaceAnchors)
         {

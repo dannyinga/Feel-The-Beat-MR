@@ -6,22 +6,35 @@ using UnityEngine;
 
 public class MainController : MonoBehaviour
 {
-    /** Set in Inspector */
-    [SerializeField] private MRUK mruk;
-    [SerializeField] private GameObject drumPadPrefab;
-    [SerializeField] private SurfaceSelection surfaceSelection;
+    #region Constants
+    #endregion
 
-    // A static reference to this script so we can use it in public static methods
+    #region Static Variables
+    
+    // A reference to the script so we can use it in public static methods
     private static MainController instance;
 
+    #endregion
+
+    #region Public Variables
+    #endregion
+
+    #region Private Variables
+    
+    [SerializeField] private MRUK mruk;
+    [SerializeField] private GameObject drumPadPrefab;
+    
+    private SurfaceSelection surfaceSelection;
     private DrumPad drumPad;
     private MRUKAnchor drumSurfaceAnchor;
-
+    
+    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+        surfaceSelection = GetComponentInChildren<SurfaceSelection>();
     }
 
     // Update is called once per frame
@@ -45,14 +58,14 @@ public class MainController : MonoBehaviour
             yield return null;
         }
 
+        surfaceSelection.EndSetup();
+
         CreateDrumPadOnDrumSurface();
     }
 
-    // Set drum surface anchor and tell surface selection script that this anchor was selected
+    // Set drum surface anchor
     public static void SetDrumSurfaceAnchor(MRUKAnchor anchor)
     {
-        // Tell surface selection script to select this surface
-        instance.surfaceSelection.SelectSurface(anchor);
         instance.drumSurfaceAnchor = anchor;
         
     }

@@ -1000,7 +1000,7 @@ MonoBehaviour:
   _skeletonType: 1
   _updateRootPose: 0
   _updateRootScale: 1
-  _enablePhysicsCapsules: 0
+  _enablePhysicsCapsules: 1
   _applyBoneTranslations: 1
 --- !u!114 &182706487
 MonoBehaviour:
@@ -1045,6 +1045,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e401ffdb8248f54d8b04917fe53ce3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fingertipPrefab: {fileID: 8756407110949627399, guid: 9845d1a56ca02c44899e4b7d97a21a03, type: 3}
 --- !u!1 &191051921
 GameObject:
   m_ObjectHideFlags: 0
@@ -2502,7 +2503,7 @@ MonoBehaviour:
   _skeletonType: 0
   _updateRootPose: 0
   _updateRootScale: 1
-  _enablePhysicsCapsules: 0
+  _enablePhysicsCapsules: 1
   _applyBoneTranslations: 1
 --- !u!114 &526199743
 MonoBehaviour:
@@ -2547,6 +2548,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e401ffdb8248f54d8b04917fe53ce3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fingertipPrefab: {fileID: 8756407110949627399, guid: 9845d1a56ca02c44899e4b7d97a21a03, type: 3}
 --- !u!1 &530439226
 GameObject:
   m_ObjectHideFlags: 0
@@ -5190,7 +5192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mruk: {fileID: 905343423}
   drumPadPrefab: {fileID: 3949582405412376217, guid: 06b20d0f491e65c4385a6f44c9944633, type: 3}
-  surfaceSelection: {fileID: 2066509019}
 --- !u!4 &1259129577
 Transform:
   m_ObjectHideFlags: 0
